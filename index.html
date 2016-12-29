@@ -2,13 +2,13 @@
 <html>
 <head>
     <title>Pong</title>
+<!--
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+-->
 
-    
-    <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
     
     <canvas id="canvas" width="640" height="480"></canvas>
     <script>
@@ -22,6 +22,8 @@
         
     //track score
     score1=score2=0;
+        
+    xv=yv=10;
     
     ais=2;
     
@@ -29,8 +31,15 @@
     window.onload=function(){
         canvas=document.getElementById("canvas");
         canvas_context = canvas.getContext("2d");
+        
         // frame rate for game
         setInterval(update, 1000/30);
+        
+        //user controls
+        canvas.addEventListener("mousemove", function(e){
+            // keep center of paddle 1 at location of users mouse
+            p1y = e.clientY-ph/2;
+        });
     }
     
     function reset(){
@@ -46,6 +55,7 @@
     }
     
     function update(){
+        
         // move ball, add velocity to coordinate of ball
         bx+=xv;
         by+=yv;
@@ -98,18 +108,22 @@
             }
         }
         
+        // player 2 is ai, will try to keep center of paddle 2 in line with ball y coordinate
         if(p2y+ph/2 < by){
             p2y += ais;
         }else{
             p2y -= ais;
         }
         
+        
         canvas_context.fillStyle = "black";
         canvas_context.fillRect(0, 0, canvas.width, canvas.height);
         
+        
+        canvas_context.fillStyle = "white";
         // draw paddles, that's a paddlin
         canvas_context.fillRect(0, p1y, pt, ph);
-        canvas_context.fillRect(c.width-pt, p2y, pt, ph);
+        canvas_context.fillRect(canvas.width-pt, p2y, pt, ph);
         
         // ball
         canvas_context.fillRect(bx-bd/2, by-bd/2, bd, bd);
