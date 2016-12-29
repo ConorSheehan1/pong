@@ -11,6 +11,31 @@
     <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
     
     <canvas id="canvas" width="640" height="480"></canvas>
+    <script>
+    p1y = p2y = 40;
+    pt=10;
+    ph=100;
+    bx=by=50;
+        
+    window.onload=function(){
+        canvas=document.getElementById("canvas");
+        canvas_context = c.getContext("2d");
+        // frame rate for game
+        setInterval(update, 1000/30);
+    }
+    
+    function update(){
+        canvas_context.fillStyle = "black";
+        canvas_context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // draw paddles, that's a paddlin
+        canvas_context.fillRect(0, p1y, pt, ph);
+        canvas_context.fillRect(c.width-pt, p2y, pt, ph);
+        
+        
+    }
+        
+    </script>
     
 </head>
 <body>
