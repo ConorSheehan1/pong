@@ -12,19 +12,98 @@
     
     <canvas id="canvas" width="640" height="480"></canvas>
     <script>
+    //paddle y, thickness, height
     p1y = p2y = 40;
     pt=10;
     ph=100;
+    //ball x, y, dimension
     bx=by=50;
+    bd=6;
+        
+    //track score
+    score1=score2=0;
+    
+    ais=2;
+    
         
     window.onload=function(){
         canvas=document.getElementById("canvas");
-        canvas_context = c.getContext("2d");
+        canvas_context = canvas.getContext("2d");
         // frame rate for game
         setInterval(update, 1000/30);
     }
     
+    function reset(){
+        // center ball
+        bx = canvas.width/2;
+        by = canvas.height/2;
+        
+        // reverse x velocity
+        xv = -xv;
+        
+        // start ball moving
+        yv = 3;
+    }
+    
     function update(){
+        // move ball, add velocity to coordinate of ball
+        bx+=xv;
+        by+=yv;
+        
+        // bounce ball at edges of screen
+        // if ball is at bottom of screen trying to move down
+        if(by < 0 && yv < 0){
+            // reverse y velocity
+            yv = -yv
+        }
+        // if ball is at top of screen trying to move up
+        if(by > canvas.height && yv > 0){
+            // reverse y velocity
+            yv = -yv
+        }
+        
+        // if ball is at left side of screen
+        if(bx<0){
+            // if ball is above bottom of paddle and below top of paddle, bounce it
+            if(by>p1y && by <p1y+ph){
+                // reverse x velocity
+                xv = -xv;
+                // reduce y velcoity depending on where on the paddle the ball hits
+                dy=by-(p1y+ph/2);
+                yv=dy*0.3;
+            }
+            // paddle1 missed ball
+            else{
+                // award player 2 one point, reset game
+                score2++;
+                reset();
+            }
+        }
+        
+        // if ball is at right of screen
+        if(bx>canvas.width){
+            // if ball is above bottom of paddle and below top of paddle, bounce it
+            if(by>p2y && by <p2y+ph){
+                // reverse x velocity
+                xv = -xv;
+                // reduce y velcoity depending on where on the paddle the ball hits
+                dy=by-(p2y+ph/2);
+                yv=dy*0.3;
+            }
+            // paddle1 missed ball
+            else{
+                // award player 2 one point, reset game
+                score1++;
+                reset();
+            }
+        }
+        
+        if(p2y+ph/2 < by){
+            p2y += ais;
+        }else{
+            p2y -= ais;
+        }
+        
         canvas_context.fillStyle = "black";
         canvas_context.fillRect(0, 0, canvas.width, canvas.height);
         
@@ -32,6 +111,12 @@
         canvas_context.fillRect(0, p1y, pt, ph);
         canvas_context.fillRect(c.width-pt, p2y, pt, ph);
         
+        // ball
+        canvas_context.fillRect(bx-bd/2, by-bd/2, bd, bd);
+        
+        //score1 on left of screen, score2 on right
+        canvas_context.fillText(score1, 100, 100);
+        canvas_context.fillText(score2, canvas.width-100, 100);
         
     }
         
