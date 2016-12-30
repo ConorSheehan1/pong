@@ -8,10 +8,8 @@
     <script>
     // global variable for setinterval 
     var stop;
-    // game loop continue value
+    var wait = 1000;
     var keep_going = true;
-    // wait time 2 seconds
-    var wait = 2000;
         
     //paddle y, thickness, height
     p1y = p2y = 40;
@@ -32,7 +30,7 @@
         
     
     // speed ai moves paddle
-    ais=2;
+    ais=10;
     
     window.onload=function(){
         canvas=document.getElementById("canvas");
@@ -41,26 +39,11 @@
         // frame rate for game
         stop = setInterval(update, 1000/30);
         
-        if (score1 == win_point){
-            p1_win();
-        }
-        if (score1 == win_point){
-            p2_win();
-        }
-        
         //user controls
         canvas.addEventListener("mousemove", function(e){
             // keep center of paddle 1 at location of users mouse
             p1y = e.clientY-ph/2;
         });
-    }
-    
-    function p1_win(){
-        
-    }
-        
-    function p2_win(){
-        
     }
     
     function reset(){
@@ -76,6 +59,30 @@
     }
     
     function update(){
+        if (score1 == win_point){
+            keep_going = confirm("You lost\nDo you want to play again?");
+            
+            if(!keep_going){
+                clearInterval(stop);
+            }
+            
+            else{
+                score1 = score2 = 0;
+                reset();
+            }
+        }
+        
+        if (score2 == win_point){
+            keep_going = confirm("You lost\nDo you want to play again?");
+            if(! keep_going){
+                clearInterval(stop);
+            }
+            
+            else{
+                score1 = score2 = 0;
+                reset();
+            }
+        }
         
         // move ball, add velocity to coordinate of ball
         bx+=xv;
@@ -107,24 +114,7 @@
             else{
                 // award player 2 one point, reset game
                 score2++;
-                if (score2 == win_point){
-                    
-                    canvas_context.fillStyle = "white";
-                    
-                    canvas_context.textAlign = "center";
-                    canvas_context.fillText("YOU LOST", canvas.width/2, canvas.height/2);
-                    
-                    // stop game from resetting
-                    keep_going = false;
-                    
-                    // wait before ending animation to allow text to be written
-                    setTimeout(function(){
-                        clearInterval(stop);
-                    }, wait);
-                }
-                if(keep_going){
-                    reset();                    
-                }
+                reset();                 
             }
         }
         
@@ -142,25 +132,15 @@
             else{
                 // award player 1 one point, reset game
                 score1++;
-                if (score1 == win_point){                    
-                    
-                    canvas_context.fillStyle = "white";  
-                    canvas_context.textAlign = "center";
-                    canvas_context.fillText("YOU WIN!", canvas.width/2, canvas.height/2);
-                    
-                    clearInterval(stop);
-                    document.createElement('<p>"you win"</p>');
-                    console.log("won");
-                }
-                else{
-                    reset();
-                }
+                reset();                
             }
         }
         
         // player 2 is ai, will try to keep center of paddle 2 in line with ball y coordinate
         if(p2y+ph/2 < by){
-            p2y += ais;
+            requestAnimationFrame(function(){
+                p2y += ais;
+            });
         }else{
             p2y -= ais;
         }
