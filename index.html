@@ -2,16 +2,13 @@
 <html>
 <head>
     <title>Pong</title>
-<!--
-    <meta charset="UTF-8">
-    <meta http-equiv="x-ua-compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
--->
-
-    
+</head>
+<body>    
     <canvas id="canvas" width="640" height="480"></canvas>
     <script>
+    // global variable for setinterval 
+    var stop;
+        
     //paddle y, thickness, height
     p1y = p2y = 40;
     pt=10;
@@ -22,18 +19,23 @@
         
     //track score
     score1=score2=0;
-        
-    xv=yv=10;
     
+    // score to play to
+    win_point = 1;
+    
+    // initial velocity of ball
+    xv=yv=10;
+        
+    
+    // speed ai moves paddle
     ais=2;
     
-        
     window.onload=function(){
         canvas=document.getElementById("canvas");
         canvas_context = canvas.getContext("2d");
         
         // frame rate for game
-        setInterval(update, 1000/30);
+        stop = setInterval(update, 1000/30);
         
         //user controls
         canvas.addEventListener("mousemove", function(e){
@@ -86,7 +88,18 @@
             else{
                 // award player 2 one point, reset game
                 score2++;
-                reset();
+                if (score2 == win_point){
+                    
+                    
+                    canvas_context.fillStyle = "white";
+                    canvas_context.fillText(score2, canvas.width-200, 100);
+                    console.log("lost");
+                    // end animation
+                    clearInterval(stop);
+                }
+                else{
+                    reset();
+                }
             }
         }
         
@@ -102,9 +115,28 @@
             }
             // paddle1 missed ball
             else{
-                // award player 2 one point, reset game
+                // award player 1 one point, reset game
                 score1++;
-                reset();
+                if (score1 == win_point){
+                    
+                    
+                    canvas_context.fillStyle = "white";
+//                    canvas_context.clearRect(150, 200, canvas.width-250, 100);
+                    
+                    
+                    canvas.textAlign = "center";
+                    canvas_context.fillText("YOU WIN!", canvas.width/2, canvas.height/2);
+                   
+                    // end animation, wait 1 second to draw on canvas
+//                    setTimeout(function(){clearInterval(stop)}, 5000);
+                    
+                    clearInterval(stop);
+                    document.createElement('<p>"you win</p>');
+                    console.log("won");
+                }
+                else{
+                    reset();
+                }
             }
         }
         
@@ -135,8 +167,6 @@
     }
         
     </script>
-    
-</head>
-<body>
+
 </body>
 </html>
