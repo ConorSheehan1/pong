@@ -6,5 +6,20 @@
 </head>
 <body>
 
+
+{%set score1 = 0%}
+{% for i in range(10) %}
+
+    <script>
+        console.log({{score1}});
+    </script>
+
+    <p>{{score1}}</p>
+    {%set score1 = score1 + 1%}
+    {%if score1 == 5 %}
+        <p>"score1 = 5"</p>
+    {%endif%}
+{% endfor %}
+
 </body>
 </html>
