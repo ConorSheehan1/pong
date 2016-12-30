@@ -1,40 +1,26 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<html lang="en">
+<head>
+    <title>Pong - {{ title }} </title>
+    <meta charset="utf-8">
 
-        <title>Pong - {{ title }} </title>
-        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
-        <!-- style sheets -->
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
-        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/reset.css">
+    <link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
     <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav", id="drop">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Pong<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/">game</a>
-                                <li><a href="/leader_board">leader board</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <nav class="navbar navbar-inverse" style="border-radius:0px;">
+          <div class="container-fluid" style="background:black;">
+            <ul class="nav navbar-nav">
+              <li><a href="/">Home</a></li>
+              <li><a href="/game">Game</a></li>
+              <li><a href="/leader_board">Leader Board</a></li>
+            </ul>
+          </div>
         </nav>
-        {% block content %}{% endblock %}
+    {% block content %}{% endblock %}
     </body>
 </html>
