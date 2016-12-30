@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{title}}</title>
-</head>
-<body>    
+{% extends 'base_template.html' %}
+
+{% block content %}
     <canvas id="canvas" width="640" height="480"></canvas>
     <script>
     // global variable for setinterval 
@@ -166,5 +163,4 @@
         
     </script>
 
-</body>
-</html>
+{% endblock %}
