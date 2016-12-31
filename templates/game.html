@@ -24,6 +24,9 @@
     
     // initial velocity of ball
     xv=yv=10;
+
+    //audio
+    var rebound_sound = new Audio("../static/door.mp3");
         
     
     // speed ai moves paddle
@@ -101,6 +104,10 @@
         if(bx<0){
             // if ball is above bottom of paddle and below top of paddle, bounce it
             if(by>p1y && by <p1y+ph){
+
+                //play rebound sound
+                rebound_sound.play();
+
                 // reverse x velocity
                 xv = -xv;
                 // reduce y velcoity depending on where on the paddle the ball hits
@@ -119,6 +126,10 @@
         if(bx>canvas.width){
             // if ball is above bottom of paddle and below top of paddle, bounce it
             if(by>p2y && by <p2y+ph){
+
+                //play rebound sound
+                rebound_sound.play();
+
                 // reverse x velocity
                 xv = -xv;
                 // reduce y velcoity depending on where on the paddle the ball hits
