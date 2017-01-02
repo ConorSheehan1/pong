@@ -3,6 +3,7 @@
 {% block content %}
 
 <div class="container">
+    <p>highlight is {{highlight}}</p>
     <table>
         <tr>
             <th>Name</th>
@@ -10,8 +11,14 @@
         </tr>
         {% for value in leaderboard %}
             <tr>
-                <td>{{value[0]}}</td>
-                <td style="text-align: right">{{value[1]}}</td>
+                {% if value[0] == highlight %}
+                    <td style="background-color: #4CAF50">{{value[0]}}</td>
+                    <td style="background-color: #4CAF50; text-align: right">{{value[1]}}</td>
+                {% else %}
+                    <td>{{value[0]}}</td>
+                    <td style="text-align: right">{{value[1]}}</td>
+                {% endif %}
+
             </tr>
         {% endfor %}
 

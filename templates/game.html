@@ -1,6 +1,7 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
+<div class="container">
     <canvas id="canvas" width="640" height="480"></canvas>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
@@ -193,21 +194,22 @@
         
     </script>
 
-<form id="form-hidden" class="form-horizontal" role="form" method="post" action="">
-    <div class="form-group">
-        <p class="form-inputs">
-            <span id="show_score"></span>
-            {{ form.username(placeholder="name") }}
-            {% for error in form.username.errors %}
-                <span style="color: red;">* {{ error }}</span>
-            {% endfor %}
-            {{ form.score(id="score") }}
-            <br>
-            <input type="submit" value="submit score" class="btn btn-default">
-            <input type="button" value="play again" class="btn btn-default" onclick="play_again()">
-            <input type="button" value="quit" class="btn btn-default" onclick="go_home()">
-            <!--<div class="g-recaptcha" data-sitekey="6LfWYRAUAAAAAJDDuygfayoQW-JvzYLb81TEUiLp"></div>-->
-    </div>
-</form>
+    <form id="form-hidden" class="form-horizontal" role="form" method="post" action="">
+        <div class="form-group">
+            <p class="form-inputs">
+                <span id="show_score"></span>
+                {{ form.username(placeholder="name") }}
+                {% for error in form.username.errors %}
+                    <span style="color: red;">* {{ error }}</span>
+                {% endfor %}
+                {{ form.score(id="score") }}
+                <br>
+                <input type="submit" value="submit score" class="btn btn-default">
+                <input type="button" value="play again" class="btn btn-default" onclick="play_again()">
+                <input type="button" value="quit" class="btn btn-default" onclick="go_home()">
+                <!--<div class="g-recaptcha" data-sitekey="6LfWYRAUAAAAAJDDuygfayoQW-JvzYLb81TEUiLp"></div>-->
+        </div>
+    </form>
+</div>
 
 {% endblock %}
