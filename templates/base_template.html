@@ -24,6 +24,16 @@
                     document.getElementById('fx_icon').className = 'glyphicon glyphicon-volume-off';
                 }
         }
+
+        var toggle_music = function(){
+             play_music = !play_music;
+                if(play_music){
+                    document.getElementById('music_icon').className = 'glyphicon glyphicon-headphones';
+                }
+                else{
+                    document.getElementById('music_icon').className = 'glyphicon glyphicon-volume-off';
+                }
+        }
     </script>
 </head>
     <body>
@@ -35,8 +45,8 @@
                     <li><a href="/leader_board">Leader Board</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li onclick="toggle_fx()"><a><span id="fx_icon" class="glyphicon glyphicon-volume"></span> Sound</a></li>
-                    <li onclick="play_music = !play_music; console.log(play_music)"><a><span class="glyphicon glyphicon-headphones"></span> Music</a></li>
+                    <li onclick="toggle_fx()"><a><span id="fx_icon" class="glyphicon glyphicon-volume-up"></span> Sound</a></li>
+                    <li onclick="toggle_music()"><a><span id="music_icon" class="glyphicon glyphicon-headphones"></span> Music</a></li>
                 </ul>
             </div>
         </nav>
