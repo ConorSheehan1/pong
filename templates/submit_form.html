@@ -1,0 +1,25 @@
+{% extends 'base_template.html' %}
+
+{% block content %} <!-- the linked templates have matching block statements named "content" -->
+
+
+<form class="form-horizontal" role="form" method="post" action="" name="login">
+
+    <div class="form-group">
+        <p class="form-inputs">
+            <input type="text" name='username' placeholder="name">
+
+        </p>
+        <p class="form-inputs">
+            <input type="text" name='score' value={{score}}>
+        </p>
+        <br>
+        <p class="form-inputs">
+            <input type="submit" value="submit score" class="btn btn-default">
+        </p>
+        {% if error != None %}
+            <p style="color: red;"> {{ error }} <p>
+        {% endif %}
+    </div>
+</form>
+{% endblock %}
