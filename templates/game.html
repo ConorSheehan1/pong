@@ -42,6 +42,8 @@
 
         // calculate score, may be redundant if function is just used to toggle view, but isn't expensive
         document.getElementById("score").value = score1-score2;
+
+        document.getElementById("show_score").innerHTML = "Score: " + (score1-score2);
     };
 
     // restart game
@@ -57,6 +59,10 @@
         // start game loop
         keep_going = true;
         stop = setInterval(update, 1000/30);
+    }
+
+    var go_home = function(){
+        window.location.replace("/");
     }
 
 
@@ -88,31 +94,9 @@
     }
     
     function update(){
-        if (score1 == win_point){
-            keep_going = confirm("You lost\nDo you want to play again?");
-            
-            if(!keep_going){
-                clearInterval(stop);
-                calculate_score()
-            }
-            
-            else{
-                score1 = score2 = 0;
-                reset();
-            }
-        }
-        
-        if (score2 == win_point){
-            keep_going = confirm("You lost\nDo you want to play again?");
-            if(! keep_going){
-                clearInterval(stop);
-                calculate_score()
-            }
-            
-            else{
-                score1 = score2 = 0;
-                reset();
-            }
+        if (score1 == win_point || score2 == win_point){
+            clearInterval(stop);
+            calculate_score()
         }
         
         // move ball, add velocity to coordinate of ball
@@ -212,14 +196,17 @@
 <form id="form-hidden" class="form-horizontal" role="form" method="post" action="">
     <div class="form-group">
         <p class="form-inputs">
+            <span id="show_score"></span>
             {{ form.username(placeholder="name") }}
             {% for error in form.username.errors %}
                 <span style="color: red;">* {{ error }}</span>
             {% endfor %}
-            <!--<input id="score" type="text">-->
             {{ form.score(id="score") }}
+            <br>
             <input type="submit" value="submit score" class="btn btn-default">
-            <input type="button" value="cancel" class="btn btn-default" onclick="play_again()">
+            <input type="button" value="play again" class="btn btn-default" onclick="play_again()">
+            <input type="button" value="quit" class="btn btn-default" onclick="go_home()">
+            <!--<div class="g-recaptcha" data-sitekey="6LfWYRAUAAAAAJDDuygfayoQW-JvzYLb81TEUiLp"></div>-->
     </div>
 </form>
 
