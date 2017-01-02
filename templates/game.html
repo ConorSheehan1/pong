@@ -3,23 +3,14 @@
 {% block content %}
     <canvas id="canvas" width="640" height="480"></canvas>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{{
-      url_for('static', filename='jquery.js') }}">\x3C/script>')
-    </script>
     <script>
-    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     var calculate_score = function() {
         console.log("submit " + score1 + ", " + score2);
-        $.getJSON($SCRIPT_ROOT + '/submit_form', {
-            user: score1,
-            computer: score2
-        }, function(data) {
-            $("#result").text(data.result);
-        });
 
-        // redirect to form
-        window.location.replace("/submit_form");
-        return false;
+        // unhide form
+        document.getElementById("form-hidden").style.display = "block";
+        document.getElementById("score").value = score1-score2;
+
     };
 
     // global variable for setinterval 
@@ -36,7 +27,7 @@
     bd=6;
         
     //track score
-    score1=score2=10;
+    score1=score2=0;
     
     // score to play to
     win_point = {{win_point}}
@@ -199,5 +190,20 @@
     }
         
     </script>
+
+<form id="form-hidden" class="form-horizontal" role="form" method="post" action="/" name="submit">
+    <div class="form-group">
+        <p class="form-inputs">
+            {{ form.username(placeholder="name") }}
+            {% for error in form.username.errors %}
+                <span style="color: red;">* {{ error }}</span>
+            {% endfor %}
+            <input id="score" type="text">
+            <input type="button" value="submit score" class="btn btn-default">
+        {% if error != None %}
+            <p style="color: red;"> {{ error }} <p>
+        {% endif %}
+    </div>
+</form>
 
 {% endblock %}

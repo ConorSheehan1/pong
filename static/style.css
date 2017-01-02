@@ -1,3 +1,11 @@
 .form-horizontal{
     margin: 30px;
 }
+
+#form-hidden{
+    display: none;
+}
+
+#score{
+    //display: none;
+}
