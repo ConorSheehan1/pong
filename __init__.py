@@ -12,38 +12,38 @@ def home_page():
     return render_template("./index.html", title="home")
 
 
-@app.route('/submit_score', methods=['GET', 'POST'])
-def submit_score():
-    error = None
-    form = SubmitForm()
-    # if username isn't already on leaderboard, add score to db
-    if request.method == "POST" and form.validate_on_submit():
+# @app.route('/submit_score', methods=['GET', 'POST'])
+def submit_score(username, score):
+    try:
         conn = sqlite3.connect('pong.db')
         c = conn.cursor()
         c.execute("INSERT INTO leaderboard "
-          "values (?, ?)", ("me", 0))
+              "values (?, ?)", (username, score))
 
         conn.commit()
         conn.close()
-    return render_template("submit_form.html", title="submit", form=form, error=error)
+        return True
+    except:
+        return False
 
 
 @app.route('/game', methods=['GET', 'POST'])
 def game_page():
 
-    error = None
     form = SubmitForm()
-    user = request.args.get('user', 0, type=int)
-    computer = request.args.get('computer', 0, type=int)
-    if request.method == "POST" and form.validate_on_submit():
-        if user is None:
-            # flash("Score %s for user %s was logged successfully" % (form.score.data, form.username.data))
-            return game_page()
-        else:
-            error = "Error" + form.username.data + "already exists, please choose a different name."
-            print(error)
+    if form.validate_on_submit():
+        print("here")
+        submit_score(request.form["username"], request.form["score"])
+        # conn = sqlite3.connect('pong.db')
+        # c = conn.cursor()
+        # c.execute("INSERT INTO leaderboard "
+        #       "values (?, ?)", (request.form["username"], request.form["score"]))
+        #
+        # conn.commit()
+        # conn.close()
+        # print("commited", form.username.data, form.score.data, "to db")
 
-    return render_template("game.html", title="game", win_point=2, form=form, error=error)
+    return render_template("game.html", title="game", win_point=1, form=form)
     # return render_template("template.html", score1=0)
 
 

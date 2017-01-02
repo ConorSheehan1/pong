@@ -20,6 +20,7 @@ def unique_user(form, field):
 
 class SubmitForm(Form):
     username = StringField('name', [validators.DataRequired(), unique_user])
+    score = StringField("score")
     recaptcha = RecaptchaField()
 
 

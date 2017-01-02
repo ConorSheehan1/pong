@@ -191,18 +191,16 @@
         
     </script>
 
-<form id="form-hidden" class="form-horizontal" role="form" method="post" action="/" name="submit">
+<form id="form-hidden" class="form-horizontal" role="form" method="post" action="" name="submit">
     <div class="form-group">
         <p class="form-inputs">
             {{ form.username(placeholder="name") }}
             {% for error in form.username.errors %}
                 <span style="color: red;">* {{ error }}</span>
             {% endfor %}
-            <input id="score" type="text">
-            <input type="button" value="submit score" class="btn btn-default">
-        {% if error != None %}
-            <p style="color: red;"> {{ error }} <p>
-        {% endif %}
+            <!--<input id="score" type="text">-->
+            {{ form.score(id="score") }}
+            <input type="submit" value="submit score" class="btn btn-default">
     </div>
 </form>
 
