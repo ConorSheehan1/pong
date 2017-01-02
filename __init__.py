@@ -9,30 +9,40 @@ heroku = Heroku(app)
 
 @app.route('/')
 def home_page():
-    return render_template("index.html", title="home")
+    return render_template("./index.html", title="home")
 
 
-@app.route("/submit_form", methods=["GET", "POST"]) # route for handling the login page logic. view function accepts both GET and POST requests
+@app.route("/submit_form", methods=["GET", "POST"])
 def submit_score():
-    print("go")
-    error = None # start with no error
-    form = SubmitForm() # create instance form
-    conn = sqlite3.connect('pong.db') # connect to db
+    error = None
+    form = SubmitForm()
+    # score is users score - computers score
+    user = request.args.get('user', 0, type=int)
+    computer = request.args.get('computer', 0, type=int)
+
+    # set form field to be difference between user and computer score before setting it to read only
+    print(user, computer)
+
     if request.method == "POST" and form.validate_on_submit():
-        user = conn.cursor().execute("SELECT user_name FROM users where user_name = (?)", form.username.data)
+        conn = sqlite3.connect('pong.db')
+        c = conn.cursor()
+        user = c.execute("SELECT user_name FROM users WHERE user_name = ?", form.username.data)
         print("user", user)
         if user is None:
-            flash("Score %s for user %s logged successfully" % (form.score.data, form.username.data)) # returns a message on next page to user
-            return game_page() # redirect tells the client web browser to navigate to a different page
+            # flash("Score %s for user %s was logged successfully" % (form.score.data, form.username.data))
+            return game_page()
         else:
             error = "Error" + form.username.data + "already exists, please choose a different name."
             print(error)
-    return render_template("submit_form.html", title="submit", form=form, error=error)
+
+        conn.commit()
+        conn.close()
+    return render_template("submit_form.html", title="submit", form=form, error=error, score=user-computer)
 
 
 @app.route('/game')
 def game_page():
-    return render_template("game.html", title="game", win_point=2)
+    return render_template("game.html", title="game", win_point=11)
     # return render_template("template.html", score1=0)
 
 

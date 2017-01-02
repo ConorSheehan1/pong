@@ -2,7 +2,26 @@
 
 {% block content %}
     <canvas id="canvas" width="640" height="480"></canvas>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{
+      url_for('static', filename='jquery.js') }}">\x3C/script>')
+    </script>
     <script>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var calculate_score = function() {
+        console.log("submit " + score1 + ", " + score2);
+        $.getJSON($SCRIPT_ROOT + '/submit_form', {
+            user: score1,
+            computer: score2
+        }, function(data) {
+            $("#result").text(data.result);
+        });
+
+        // redirect to form
+        window.location.replace("/submit_form");
+        return false;
+    };
+
     // global variable for setinterval 
     var stop;
     var wait = 1000;
@@ -17,7 +36,7 @@
     bd=6;
         
     //track score
-    score1=score2=0;
+    score1=score2=10;
     
     // score to play to
     win_point = {{win_point}}
@@ -30,8 +49,9 @@
         
     
     // speed ai moves paddle
-    ais=10;
-    
+    var ais=10;
+
+    // main game
     window.onload=function(){
         canvas=document.getElementById("canvas");
         canvas_context = canvas.getContext("2d");
@@ -64,6 +84,7 @@
             
             if(!keep_going){
                 clearInterval(stop);
+                calculate_score()
             }
             
             else{
@@ -76,6 +97,7 @@
             keep_going = confirm("You lost\nDo you want to play again?");
             if(! keep_going){
                 clearInterval(stop);
+                calculate_score()
             }
             
             else{

@@ -13,15 +13,13 @@
             {% endfor %}
         </p>
         <p class="form-inputs">
-            {{ form.score(placeholder="score") }}
-            {% for error in form.score.errors %} <!-- error message: for loop that renders any errors added by the validators attached to field -->
-                <span style="color: red;">* {{ error }}</span>
-            {% endfor %}
+            <input type="text" value="{{score}}">
         </p>
         <br>
         <p class="form-inputs">
             <input type="submit" value="submit score" class="btn btn-default">
         </p>
+        <p>{{score}}</p>
         {% if error != None %}
             <p style="color: red;"> {{ error }} <p>
         {% endif %}
