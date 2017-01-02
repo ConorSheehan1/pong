@@ -7,11 +7,16 @@
 
     <div class="form-group">
         <p class="form-inputs">
-            <input type="text" name='username' placeholder="name">
-
+            {{ form.username(placeholder="name") }}
+            {% for error in form.username.errors %} <!-- error message: for loop that renders any errors added by the validators attached to field -->
+                <span style="color: red;">* {{ error }}</span>
+            {% endfor %}
         </p>
         <p class="form-inputs">
-            <input type="text" name='score' value={{score}}>
+            {{ form.score(placeholder="score") }}
+            {% for error in form.score.errors %} <!-- error message: for loop that renders any errors added by the validators attached to field -->
+                <span style="color: red;">* {{ error }}</span>
+            {% endfor %}
         </p>
         <br>
         <p class="form-inputs">
