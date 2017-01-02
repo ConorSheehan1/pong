@@ -1,6 +1,6 @@
+import sqlite3
 from flask_wtf import Form, RecaptchaField
 from wtforms import StringField, validators
-import sqlite3
 
 
 def unique_user(form, field):

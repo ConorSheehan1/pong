@@ -1,5 +1,21 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-<p>leader board goes here</p>
+
+<div class="container">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th style="text-align: right">Score</th>
+        </tr>
+        {% for value in leaderboard %}
+            <tr>
+                <td>{{value[0]}}</td>
+                <td style="text-align: right">{{value[1]}}</td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
+
 {% endblock %}

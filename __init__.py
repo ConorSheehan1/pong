@@ -9,7 +9,7 @@ heroku = Heroku(app)
 
 @app.route('/')
 def home_page():
-    return render_template("./index.html", title="home")
+    return render_template("./index.html", title="Home")
 
 
 # @app.route('/submit_score', methods=['GET', 'POST'])
@@ -32,25 +32,22 @@ def game_page():
 
     form = SubmitForm()
     if form.validate_on_submit():
-        print("here")
-        submit_score(request.form["username"], request.form["score"])
-        # conn = sqlite3.connect('pong.db')
-        # c = conn.cursor()
-        # c.execute("INSERT INTO leaderboard "
-        #       "values (?, ?)", (request.form["username"], request.form["score"]))
-        #
-        # conn.commit()
-        # conn.close()
-        # print("commited", form.username.data, form.score.data, "to db")
+        submitted = submit_score(request.form["username"], request.form["score"])
+        print(submitted)
+        if submitted:
+            flash("Your score" + request.form["score"] + "was submitted successfully")
+        else:
+            flash("something went wrong")
 
-    return render_template("game.html", title="game", win_point=1, form=form)
-    # return render_template("template.html", score1=0)
+    return render_template("game.html", title="Game", win_point=1, form=form)
 
 
 @app.route('/leader_board')
 def leader_board():
-    return render_template("leader_board.html", title="leader board")
+    conn = sqlite3.connect('pong.db')
+    c = conn.cursor()
+    l = [val for val in c.execute("SELECT * FROM leaderboard ORDER BY score DESC")]
+    return render_template("leader_board.html", title="Leader Board", leaderboard=l)
 
 if __name__ == "__main__":
-    app.debug = True
     app.run()
