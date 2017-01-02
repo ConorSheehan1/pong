@@ -4,15 +4,6 @@
     <canvas id="canvas" width="640" height="480"></canvas>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-    var calculate_score = function() {
-        console.log("submit " + score1 + ", " + score2);
-
-        // unhide form
-        document.getElementById("form-hidden").style.display = "block";
-        document.getElementById("score").value = score1-score2;
-
-    };
-
     // global variable for setinterval 
     var stop;
     var wait = 1000;
@@ -41,6 +32,33 @@
     
     // speed ai moves paddle
     var ais=10;
+
+    // get score and add value to hidden form
+    var calculate_score = function() {
+       // console.log("submit " + score1 + ", " + score2);
+
+        // show hidden form
+        document.getElementById("form-hidden").style.display ="block";
+
+        // calculate score, may be redundant if function is just used to toggle view, but isn't expensive
+        document.getElementById("score").value = score1-score2;
+    };
+
+    // restart game
+    var play_again = function(){
+        //hide submit form
+        document.getElementById("form-hidden").style.display ="none";
+
+        //reset scores
+        score1 = score2 = 0;
+        // reset ball and paddles
+        reset()
+
+        // start game loop
+        keep_going = true;
+        stop = setInterval(update, 1000/30);
+    }
+
 
     // main game
     window.onload=function(){
@@ -201,6 +219,7 @@
             <!--<input id="score" type="text">-->
             {{ form.score(id="score") }}
             <input type="submit" value="submit score" class="btn btn-default">
+            <input type="button" value="cancel" class="btn btn-default" onclick="play_again()">
     </div>
 </form>
 
