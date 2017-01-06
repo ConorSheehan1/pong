@@ -14,7 +14,6 @@ def unique_user(form, field):
 
     # if the name is in the database already throw an error
     if user != []:
-        print("user", user, user != [])
         raise validators.ValidationError('This name is taken, please choose a different one.')
 
 

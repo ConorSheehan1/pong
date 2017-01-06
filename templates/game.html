@@ -198,7 +198,8 @@
         <div class="form-group">
             <p class="form-inputs">
                 <span id="show_score"></span>
-                {{ form.username(placeholder="name") }}
+                {{ form.csrf_token }}
+                {{ form.username(placeholder="name", value=anon) }}
                 {% for error in form.username.errors %}
                     <span style="color: red;">* {{ error }}</span>
                 {% endfor %}
