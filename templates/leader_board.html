@@ -28,6 +28,11 @@
         {% endfor %}
 
     </table>
+
+    {% if play_again %}
+    <button style="margin-top: 5px;" onclick="window.location.replace('/')">Play Again</button>
+    {% endif %}
+
 </div>
 
 {% endblock %}

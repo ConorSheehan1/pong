@@ -7,6 +7,7 @@ app.config.from_object("config.Test")
 # app.config.from_object("config.Production")
 heroku = Heroku(app)
 
+
 def helper_submit_score(username, score):
     '''
     no need for an app route, this method should just push to db and return boolean if it worked
@@ -21,7 +22,13 @@ def helper_submit_score(username, score):
     except:
         return False
 
-# def helper_get_leaderboard():
+
+def helper_get_leaderboard():
+    conn = sqlite3.connect('pong.db')
+    c = conn.cursor()
+    # use enumerate to generate rank for users.
+    # Ties will be broken by time i.e. the first user to get a given score will appear highest
+    return [val for val in enumerate(c.execute("SELECT * FROM leaderboard ORDER BY score DESC"))]
 
 
 @app.route('/')
@@ -32,10 +39,10 @@ def home_page():
 @app.route('/game', methods=['GET', 'POST'])
 def game_page():
 
-    # count number of players in database and just assign that number +1 to default anon name
+    # count number of players in database and assign that number +1 to default anon name
     conn = sqlite3.connect('pong.db')
     c = conn.cursor()
-    anon = [val for val in c.execute("SELECT COUNT(*) FROM leaderboard")][0][0]
+    anon = [val for val in c.execute("SELECT COUNT(*) FROM leaderboard")][0][0]+1
     anon = "anon" + str(anon)
 
     form = SubmitForm()
@@ -46,23 +53,15 @@ def game_page():
 
         # if value submits successfully to database, redirect to leaderboard and highlight row added
         if submitted:
-            conn = sqlite3.connect('pong.db')
-            c = conn.cursor()
-            l = [val for val in enumerate(c.execute("SELECT * FROM leaderboard ORDER BY score DESC"))]
-            return render_template("leader_board.html", title="Leader Board", leaderboard=l,
-                            highlight=request.form["username"])
-        else:
-            return False
+            return render_template("leader_board.html", title="Leader Board", leaderboard=helper_get_leaderboard(),
+                                   highlight=request.form["username"], play_again=True)
 
     return render_template("game.html", title="Game", win_point=1, form=form, anon=anon)
 
 
 @app.route('/leader_board')
 def leader_board():
-    conn = sqlite3.connect('pong.db')
-    c = conn.cursor()
-    l = [val for val in enumerate(c.execute("SELECT * FROM leaderboard ORDER BY score DESC"))]
-    return render_template("leader_board.html", title="Leader Board", leaderboard=l, highlight="")
+    return render_template("leader_board.html", title="Leader Board", leaderboard=helper_get_leaderboard())
 
 if __name__ == "__main__":
     app.run()
