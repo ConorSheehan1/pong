@@ -7,13 +7,7 @@ app.config.from_object("config.Test")
 # app.config.from_object("config.Production")
 heroku = Heroku(app)
 
-
-@app.route('/')
-def home_page():
-    return render_template("./index.html", title="Home")
-
-
-def submit_score(username, score):
+def helper_submit_score(username, score):
     '''
     no need for an app route, this method should just push to db and return boolean if it worked
     '''
@@ -26,6 +20,13 @@ def submit_score(username, score):
         return True
     except:
         return False
+
+# def helper_get_leaderboard():
+
+
+@app.route('/')
+def home_page():
+    return render_template("./index.html", title="Home")
 
 
 @app.route('/game', methods=['GET', 'POST'])
@@ -40,14 +41,14 @@ def game_page():
     form = SubmitForm()
     if form.validate_on_submit():
         print(form.errors)
-        submitted = submit_score(request.form["username"], request.form["score"])
+        submitted = helper_submit_score(request.form["username"], request.form["score"])
         print("submitted", submitted)
 
         # if value submits successfully to database, redirect to leaderboard and highlight row added
         if submitted:
             conn = sqlite3.connect('pong.db')
             c = conn.cursor()
-            l = [val for val in c.execute("SELECT * FROM leaderboard ORDER BY score DESC")]
+            l = [val for val in enumerate(c.execute("SELECT * FROM leaderboard ORDER BY score DESC"))]
             return render_template("leader_board.html", title="Leader Board", leaderboard=l,
                             highlight=request.form["username"])
         else:
@@ -60,7 +61,7 @@ def game_page():
 def leader_board():
     conn = sqlite3.connect('pong.db')
     c = conn.cursor()
-    l = [val for val in c.execute("SELECT * FROM leaderboard ORDER BY score DESC")]
+    l = [val for val in enumerate(c.execute("SELECT * FROM leaderboard ORDER BY score DESC"))]
     return render_template("leader_board.html", title="Leader Board", leaderboard=l, highlight="")
 
 if __name__ == "__main__":
