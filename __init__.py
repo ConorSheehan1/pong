@@ -42,21 +42,21 @@ def game_page():
     # count number of players in database and assign that number +1 to default anon name
     conn = sqlite3.connect('pong.db')
     c = conn.cursor()
-    anon = [val for val in c.execute("SELECT COUNT(*) FROM leaderboard")][0][0]+1
-    anon = "anon" + str(anon)
+    names = [tup[0] for tup in c.execute("SELECT user_name FROM leaderboard")]
+    conn.close()
 
     form = SubmitForm()
     if form.validate_on_submit():
-        print(form.errors)
         submitted = helper_submit_score(request.form["username"], request.form["score"])
-        print("submitted", submitted)
 
         # if value submits successfully to database, redirect to leaderboard and highlight row added
         if submitted:
             return render_template("leader_board.html", title="Leader Board", leaderboard=helper_get_leaderboard(),
                                    highlight=request.form["username"], play_again=True)
+        else:
+            flash("an error occurred submitting to the database")
 
-    return render_template("game.html", title="Game", win_point=1, form=form, anon=anon)
+    return render_template("game.html", title="Game", win_point=1, ai_speed=5, form=form, names=names)
 
 
 @app.route('/leader_board')
