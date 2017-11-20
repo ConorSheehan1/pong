@@ -1,0 +1,17 @@
+class BaseConfig:
+    SECRET_KEY = "CHANGE_THIS"
+    RECAPTCHA_PUBLIC_KEY = 'GET_THIS_BY_REGISTERING_HERE:https://www.google.com/recaptcha'
+    RECAPTCHA_PRIVATE_KEY = 'GET_THIS_BY_REGISTERING_HERE:https://www.google.com/recaptcha'
+    RECAPTCHA_DATA_ATTRS = {'theme': 'dark'}
+
+
+class Test(BaseConfig):
+    DEBUG = True
+    TESTING = True
+    WTF_CSRF_ENABLED = False
+
+
+class Production(BaseConfig):
+    DEBUG = False
+    TESTING = False
+    WTF_CSRF_ENABLED = True
